@@ -38,7 +38,7 @@ class ProductManager {
             this.products.push(product);
             this.saveFile();
         } else {
-            return console.warn("Data missing");
+            return console.warn("Missing Data");
         }
     }
 
