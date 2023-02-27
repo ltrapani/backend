@@ -6,29 +6,29 @@ class ProductManager {
         this.path = path;
         this.getProducts()
     }
-
     addProduct(product) {
-        const { title, description, price, thumbnail, code, stock } = product;
+        const { title, description, price, thumbnail, code, stock, category } = product;
         this.getProducts();
         const lastIndex = this.products.length - 1
         if (lastIndex >= 0) {
             ProductManager.id = this.products[lastIndex].id
         }
-        if (title && description && price && thumbnail && code && stock) {
+        if (title && description && price && thumbnail && code && stock && category) {
             if (!this.products.some((item) => item.code === product.code)) {
                 ProductManager.id++;
                 product = {
                     ...product,
+                    status: true,
                     id: ProductManager.id
                 };
                 this.products.push(product)
                 return this.writeProductsList();
+
             }
             throw new Error('The product already exists in the list');
         }
         throw new Error("Error: Missing product's properties");
     }
-
     getProducts() {
         try {
             return this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
@@ -37,11 +37,9 @@ class ProductManager {
             return this.products = []
         }
     }
-
     writeProductsList() {
         fs.writeFileSync(this.path, JSON.stringify(this.products, '', '\t'));
     }
-
     getProductById(id) {
         this.getProducts();
         const productFiltered = (this.products.find((item) => item.id === id))
@@ -50,14 +48,15 @@ class ProductManager {
         }
         throw new Error('Error: Product not found')
     }
-
     updateProduct(id, property, value) {
         this.getProducts();
         const productId = this.getProductById(id);
-        Object.defineProperty(productId, property, { value: value });
-        this.writeProductsList();
+        if (property !== "id") {
+            Object.defineProperty(productId, property, { value: value });
+            return this.writeProductsList();
+        }
+        throw new Error("ID cannot be changed")
     }
-
     deleteProduct(id) {
         const productId = this.getProductById(id);
         const index = this.products.indexOf(productId);
@@ -65,13 +64,10 @@ class ProductManager {
         this.writeProductsList();
     }
 }
-
 /* PROCESO DE TESTING */
 
-//const testList = new ProductManager('./testList.json')
+const testList = new ProductManager('./data_base/testList.json')
 
-/*
 module.exports = {
     testList
-} 
-*/ 
+}
