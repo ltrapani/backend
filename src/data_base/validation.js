@@ -16,11 +16,11 @@ function __validateproduct(data, keys){
         dataKeys.every((key) => keys.includes(key))
     )
 }
-
 export function validateproduct(maybeProducto){
     return validate(maybeProducto, productKeys)
 }
 
 export function _validateproduct(maybeProductoParcial){
-    return validateproduct(maybeProductoParcial, productKeys)
+    return __validateproduct(maybeProductoParcial, productKeys)
 }
+

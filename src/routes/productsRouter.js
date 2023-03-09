@@ -83,10 +83,10 @@ route.put('/:pid', async (req, res) => {
 
     const esValido = _validateproduct(nuevosDatos);
     if (!esValido) {
-      res.status(400).send({
+        res.status(400).send({
         error: 'Invalid data',
-      });
-      return;
+    });
+    return;
     }
     await productoManager.updateProduct(idProducto, nuevosDatos);
     res.status(202).send({ ok: true });
