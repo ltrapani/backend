@@ -1,0 +1,18 @@
+<div>
+    {{> header}}
+    {{> title titulo="Catalogo"}}
+    <div class="container">
+        <section class="section products_container">
+            <div class="products" id="productsContainer">
+                {{#each data}}
+                <div class="product" data-id="">
+                    <h2>{{this.title}}</h2>
+                    <p class="description">{{this.description}}</p>
+                    <p class="price">${{this.price}}</p>
+                    <button id="comprar">Agregar al carrito</button>
+                </div>
+                {{/each}}
+            </div>
+        </section>
+    </div>
+</div>
